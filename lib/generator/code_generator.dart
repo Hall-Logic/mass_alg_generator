@@ -39,7 +39,33 @@ String generateApiC(List<ApiFunction> functions) {
 
 #define EXPORT extern __attribute__((visibility("default"))) __attribute__((used))
 
-${gettersAndSetters.exportFunctions}
+#include "api.h"
+#include "Mass_Algorithm_App.h"
+
+#define EXPORT extern __attribute__((visibility("default"))) __attribute__((used))
+
+// EXPORT
+EXPORT void
+mass_alg_init()
+{
+    Accelx = 0;
+    Accely = 0;
+    Accelz = 0;
+    return Mass_Algorithm_App_initialize();
+}
+
+EXPORT void mass_alg_step()
+{
+    return Mass_Algorithm_App_step();
+}
+
+EXPORT void mass_alg_accel_step(float ax, float ay, float az)
+{
+    Accelx = ax;
+    Accely = ay;
+    Accelz = az;
+    return Mass_Algorithm_App_step();
+}
 
 // getters and setters:
 ${gettersAndSetters.getters}

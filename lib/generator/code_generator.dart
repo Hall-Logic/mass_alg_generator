@@ -84,7 +84,8 @@ GettersAndSetters _generateGettersAndSetters(List<ApiFunction> functions) {
     } else if (function.isSetter) {
       setters.writeln(_generateSetter(function));
     } else {
-      exportFunctions.writeln(_generateExportFunction(function));
+      // none
+      exportFunctions.writeln('');
     }
   }
 
@@ -95,16 +96,6 @@ GettersAndSetters _generateGettersAndSetters(List<ApiFunction> functions) {
   );
 }
 
-String _generateExportFunction(ApiFunction function) {
-  return '''
-EXPORT ${function.returnType}
-${function.name}(${function.parameters.join(', ')})
-{
-${_generateFunctionBody(function)}
-}
-''';
-}
-
 String _generateGetter(ApiFunction function) {
   return '''
 EXPORT ${function.returnType} ${function.name}() { return ${function.variableName}; }
@@ -112,8 +103,10 @@ EXPORT ${function.returnType} ${function.name}() { return ${function.variableNam
 }
 
 String _generateSetter(ApiFunction function) {
+  // Extract the parameter type from the parameters list
+  String parameterType = function.parameters[0];
   return '''
-EXPORT void ${function.name}(${function.returnType} value) { ${function.variableName} = value; }
+EXPORT void ${function.name}(${parameterType} value) { ${function.variableName} = value; }
 ''';
 }
 

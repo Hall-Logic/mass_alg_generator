@@ -4,7 +4,8 @@ import 'package:mass_alg_generator/generator/code_generator.dart';
 import 'package:mass_alg_generator/generator/variable_parser.dart';
 
 void main() async {
-  final variables = await parseVariablesFromFile();
+  final variables =
+      await parseVariablesFromFile('./libs/algorithm/Mass_Algorithm_App.c');
   final functions = _generateApiFunctions(variables);
 
   final apiC = generateApiC(functions);

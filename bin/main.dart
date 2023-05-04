@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'code_generator.dart';
-import 'variable_parser.dart';
+import 'package:mass_alg_generator/generator/code_generator.dart';
+import 'package:mass_alg_generator/generator/variable_parser.dart';
 
 void main() async {
   final variables = await parseVariablesFromFile('variables.txt');

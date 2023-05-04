@@ -120,25 +120,27 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
     final dartType = _convertCppTypeToDartType(variable.type);
     final nativeFunctionType = _convertDartTypeToNativeFunctionType(dartType);
     return '''
-    final _get_${variable.name.toLowerCase()} =
-        nativeApiLib.lookup<NativeFunction<$nativeFunctionType Function()>>('get_${variable.name.toLowerCase()}');
-    get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<$dartType Function()>();''';
+typedef _Get${variable.name}Type = $dartType Function();
+final _get_${variable.name.toLowerCase()} =
+    nativeApiLib.lookup<NativeFunction<_Get${variable.name}Type Function()>('get_${variable.name.toLowerCase()}');
+get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<_Get${variable.name}Type>();''';
   }).join('\n');
 
   final setters = variables.map((variable) {
     final dartType = _convertCppTypeToDartType(variable.type);
     final nativeFunctionType = _convertDartTypeToNativeFunctionType(dartType);
     return '''
-    final _set_${variable.name.toLowerCase()} =
-        nativeApiLib.lookup<NativeFunction<Void Function($nativeFunctionType)>>('set_${variable.name.toLowerCase()}');
-    set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<void Function($dartType)>();''';
+typedef _Set${variable.name}Type = void Function($dartType);
+final _set_${variable.name.toLowerCase()} =
+    nativeApiLib.lookup<NativeFunction<_Set${variable.name}Type Function($nativeFunctionType)>>('set_${variable.name.toLowerCase()}');
+set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<_Set${variable.name}Type>();''';
   }).join('\n');
 
   final getterSetterDefinitions = variables.map((variable) {
     final dartType = _convertCppTypeToDartType(variable.type);
     return '''
-  static late Function get_${variable.name.toLowerCase()};
-  static late Function set_${variable.name.toLowerCase()};''';
+static late _Get${variable.name}Type get_${variable.name.toLowerCase()};
+static late _Set${variable.name}Type set_${variable.name.toLowerCase()};''';
   }).join('\n');
 
   return '''

@@ -12,7 +12,7 @@ void main() async {
   await File('api.c').writeAsString(apiC);
 
   final dartFfiBridge = generateDartFfiBridgeCode(variables);
-  await File('ffi_bridge.dart').writeAsString(dartFfiBridge);
+  await File('ffibridge.dart').writeAsString(dartFfiBridge);
 }
 
 List<ApiFunction> _generateApiFunctions(List<Variable> variables) {

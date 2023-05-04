@@ -4,7 +4,7 @@ import 'package:mass_alg_generator/generator/code_generator.dart';
 import 'package:mass_alg_generator/generator/variable_parser.dart';
 
 void main() async {
-  final variables = await parseVariablesFromFile('variables.txt');
+  final variables = await parseVariablesFromFile();
   final functions = _generateApiFunctions(variables);
 
   final apiC = generateApiC(functions);
@@ -48,7 +48,9 @@ List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
       returnType: 'void',
       variableName: variable.name,
       isSetter: true,
-      parameters: [variable.type],
+      parameters: [
+        variable.type + ' value'
+      ], // Add 'value' to the parameter type
     ));
   }
 

@@ -39,11 +39,6 @@ String generateApiC(List<ApiFunction> functions) {
 
 #define EXPORT extern __attribute__((visibility("default"))) __attribute__((used))
 
-#include "api.h"
-#include "Mass_Algorithm_App.h"
-
-#define EXPORT extern __attribute__((visibility("default"))) __attribute__((used))
-
 // EXPORT
 EXPORT void
 mass_alg_init()
@@ -165,7 +160,7 @@ class FFIBridge {
 
     final _mass_alg_step =
         nativeApiLib.lookup<NativeFunction<Void Function()>>('mass_alg_step');
-    mass_alg_step = _mass_alg_step.asFunction<void Function()>();();
+    mass_alg_step = _mass_alg_step.asFunction<void Function()>();
     final _mass_alg_accel_step =
     nativeApiLib.lookup<NativeFunction<Void Function(Float, Float, Float)>>(
         'mass_alg_accel_step');

@@ -106,7 +106,7 @@ String _generateSetter(ApiFunction function) {
   // Extract the parameter type from the parameters list
   String parameterType = function.parameters[0];
   return '''
-EXPORT void ${function.name}(${parameterType} value) { ${function.variableName} = value; }
+EXPORT void ${function.name}(${parameterType}) { ${function.variableName} = value; }
 ''';
 }
 

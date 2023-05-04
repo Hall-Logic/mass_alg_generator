@@ -34,8 +34,8 @@ String generateApiC(List<ApiFunction> functions) {
   final gettersAndSetters = _generateGettersAndSetters(functions);
 
   return '''
-THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency
-Author: Mark Larsen, 2023
+//THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency
+//Author: Mark Larsen, 2023
 #include "api.h"
 #include "Mass_Algorithm_App.h"
 
@@ -142,8 +142,8 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
   }).join('\n');
 
   return '''
-THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency - edit the generator code in the github repo.
-Author: Mark Larsen, 2023
+//THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency - edit the generator code in the github repo.
+//Author: Mark Larsen, 2023
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names

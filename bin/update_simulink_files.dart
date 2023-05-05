@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
@@ -18,15 +19,17 @@ Future<void> main(List<String> arguments) async {
     exit(1);
   }
 
+  // Get the package path
+  final packagePath = await getPackagePath();
   // Unzip and move the files
-  await unzipAndMoveFiles(results['zipfile'] as String);
+  await unzipAndMoveFiles(results['zipfile'] as String, packagePath);
 
   // Generate FFIBridge
-  await generateFFIBridge();
+  await generateFFIBridge(packagePath);
 }
 
-Future<void> unzipAndMoveFiles(String zipfile) async {
-  const outputDir = 'algorithm';
+Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
+  final outputDir = path.join(packageDir, 'libs', 'algorithm');
 
   final bytes = File(zipfile).readAsBytesSync();
   final archive = ZipDecoder().decodeBytes(bytes);
@@ -88,16 +91,18 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
   }
 }
 
-Future<void> generateFFIBridge() async {
-  final variables =
-      await parseVariablesFromFile('./algorithm/Mass_Algorithm_App.c');
+Future<void> generateFFIBridge(String packageDir) async {
+  final outputDir = path.join(packageDir, 'libs', 'algorithm');
+  final String algorithmFile = path.join(outputDir, 'Mass_Algorithm_App.c');
+  final variables = await parseVariablesFromFile(algorithmFile);
   final functions = _generateApiFunctions(variables);
 
   final apiC = generateApiC(functions);
-  await File('api.c').writeAsString(apiC);
+  await File(path.join(packageDir, 'generated', 'api.c')).writeAsString(apiC);
 
   final dartFfiBridge = generateDartFfiBridgeCode(variables);
-  await File('ffibridge.dart').writeAsString(dartFfiBridge);
+  await File(path.join(packageDir, 'generated', 'ffibridge.dart'))
+      .writeAsString(dartFfiBridge);
 }
 
 List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
@@ -141,4 +146,11 @@ List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
   }
 
   return functions;
+}
+
+Future<String> getPackagePath() async {
+  final packageUri = Uri.parse('package:mass_alg_generator/');
+  final packagePath =
+      (await Isolate.resolvePackageUri(packageUri))!.toFilePath();
+  return packagePath;
 }

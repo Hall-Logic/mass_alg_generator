@@ -29,8 +29,9 @@ Future<void> main(List<String> arguments) async {
 }
 
 Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
-  final outputDir = path.join(packageDir, 'libs', 'algorithm');
+  final outputDir = path.join(packageDir, 'algorithm');
 
+  // Unzip the input file into the output directory
   final bytes = File(zipfile).readAsBytesSync();
   final archive = ZipDecoder().decodeBytes(bytes);
 
@@ -58,7 +59,7 @@ Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
     file.renameSync(newPath);
   }
 
-  // Remove unwanted file types and files with no extension
+  // Remove unwanted file types
   final extensionsToRemove = [
     '.png',
     '.html',
@@ -73,12 +74,16 @@ Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
     '.cur',
   ];
 
-  for (final file in files) {
-    if (extensionsToRemove.contains(path.extension(file.path)) ||
-        !file.path.contains('.')) {
-      if (file.existsSync()) {
-        file.deleteSync();
-      }
+  final filesToRemove = Directory(outputDir)
+      .listSync(recursive: false, followLinks: false)
+      .where((entity) =>
+          entity is File &&
+          (extensionsToRemove.contains(path.extension(entity.path)) ||
+              !entity.path.contains('.')));
+
+  for (final file in filesToRemove) {
+    if (file.existsSync()) {
+      file.deleteSync();
     }
   }
 
@@ -92,7 +97,7 @@ Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
 }
 
 Future<void> generateFFIBridge(String packageDir) async {
-  final outputDir = path.join(packageDir, 'libs', 'algorithm');
+  final outputDir = path.join(packageDir, 'algorithm');
   final String algorithmFile = path.join(outputDir, 'Mass_Algorithm_App.c');
   final variables = await parseVariablesFromFile(algorithmFile);
   final functions = _generateApiFunctions(variables);

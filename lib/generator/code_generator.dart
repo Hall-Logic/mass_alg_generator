@@ -122,7 +122,7 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
     return '''
     final _get_${variable.name.toLowerCase()} =
         nativeApiLib.lookup<NativeFunction<$nativeFunctionType Function()>>('get_${variable.name.toLowerCase()}');
-    get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<Getter<$dartType> Function()>();''';
+    get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<$dartType Function()>();''';
   }).join('\n');
 
   final setters = variables.map((variable) {
@@ -131,28 +131,25 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
     return '''
     final _set_${variable.name.toLowerCase()} =
         nativeApiLib.lookup<NativeFunction<Void Function($nativeFunctionType)>>('set_${variable.name.toLowerCase()}');
-    set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<Setter<$dartType> Function()>();''';
+    set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<void Function($dartType)>();''';
   }).join('\n');
 
   final getterSetterDefinitions = variables.map((variable) {
     final dartType = _convertCppTypeToDartType(variable.type);
     return '''
-  static late Getter<$dartType> get_${variable.name.toLowerCase()};
-  static late Setter<$dartType> set_${variable.name.toLowerCase()};''';
+  static late Function get_${variable.name.toLowerCase()};
+  static late Function set_${variable.name.toLowerCase()};''';
   }).join('\n');
 
   return '''
 //THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency - edit the generator code in the github repo.
-//Author: Mark Larsen, Hall Logic, 2023
+//Author: Mark Larsen, 2023
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:ffi';
 import 'dart:io';
-
-typedef Getter<T> = T Function();
-typedef Setter<T> = void Function(T);
 
 class FFIBridge {
   static Future<bool> initialize() async {

@@ -18,7 +18,7 @@ dependencies:
   args: ^2.3.0
   mutex: ^3.0.1
   share_plus: ^6.3.2
-  intl: ^0.17.0
+  intl: ^0.18.0
 
 
 dev_dependencies:

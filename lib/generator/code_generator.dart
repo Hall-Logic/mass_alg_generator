@@ -120,27 +120,25 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
     final dartType = _convertCppTypeToDartType(variable.type);
     final nativeFunctionType = _convertDartTypeToNativeFunctionType(dartType);
     return '''
-typedef _Get${variable.name}Type = $dartType Function();
-final _get_${variable.name.toLowerCase()} =
-    nativeApiLib.lookup<NativeFunction<_Get${variable.name}Type Function()>('get_${variable.name.toLowerCase()}');
-get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<_Get${variable.name}Type>();''';
+    final _get_${variable.name.toLowerCase()} =
+        nativeApiLib.lookup<NativeFunction<$nativeFunctionType Function()>>('get_${variable.name.toLowerCase()}');
+    get_${variable.name.toLowerCase()} = _get_${variable.name.toLowerCase()}.asFunction<Getter<$dartType> Function()>();''';
   }).join('\n');
 
   final setters = variables.map((variable) {
     final dartType = _convertCppTypeToDartType(variable.type);
     final nativeFunctionType = _convertDartTypeToNativeFunctionType(dartType);
     return '''
-typedef _Set${variable.name}Type = void Function($dartType);
-final _set_${variable.name.toLowerCase()} =
-    nativeApiLib.lookup<NativeFunction<_Set${variable.name}Type Function($nativeFunctionType)>>('set_${variable.name.toLowerCase()}');
-set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<_Set${variable.name}Type>();''';
+    final _set_${variable.name.toLowerCase()} =
+        nativeApiLib.lookup<NativeFunction<Void Function($nativeFunctionType)>>('set_${variable.name.toLowerCase()}');
+    set_${variable.name.toLowerCase()} = _set_${variable.name.toLowerCase()}.asFunction<Setter<$dartType> Function()>();''';
   }).join('\n');
 
   final getterSetterDefinitions = variables.map((variable) {
     final dartType = _convertCppTypeToDartType(variable.type);
     return '''
-static late _Get${variable.name}Type get_${variable.name.toLowerCase()};
-static late _Set${variable.name}Type set_${variable.name.toLowerCase()};''';
+  static late Getter<$dartType> get_${variable.name.toLowerCase()};
+  static late Setter<$dartType> set_${variable.name.toLowerCase()};''';
   }).join('\n');
 
   return '''
@@ -152,6 +150,9 @@ static late _Set${variable.name}Type set_${variable.name.toLowerCase()};''';
 
 import 'dart:ffi';
 import 'dart:io';
+
+typedef Getter<T> = T Function();
+typedef Setter<T> = void Function(T);
 
 class FFIBridge {
   static Future<bool> initialize() async {

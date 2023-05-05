@@ -145,9 +145,12 @@ String generateDartFfiBridgeCode(List<Variable> variables) {
   static late void Function($dartType) set_${variable.name.toLowerCase()};''';
   }).join('\n');
 
+  final currentDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
   return '''
+//GENERATED $currentDate
 //THIS FILE IS AUTO GENERATED FROM THE mass_alg_generator dev dependency - edit the generator code in the github repo.
-//Author: Mark Larsen, 2023
+//Author: Mark Larsen, Hall Logic, 2023
 
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 // ignore_for_file: non_constant_identifier_names

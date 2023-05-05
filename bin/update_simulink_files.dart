@@ -26,7 +26,6 @@ Future<void> main(List<String> arguments) async {
 }
 
 Future<void> unzipAndMoveFiles(String zipfile) async {
-  const zipfile = 'HaulGaugeIOS_2May2023_Phone_WDapp_V6_ErrChecks.zip';
   const outputDir = 'algorithm';
 
   final bytes = File(zipfile).readAsBytesSync();
@@ -74,7 +73,9 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
   for (final file in files) {
     if (extensionsToRemove.contains(path.extension(file.path)) ||
         !file.path.contains('.')) {
-      file.deleteSync();
+      if (file.existsSync()) {
+        file.deleteSync();
+      }
     }
   }
 

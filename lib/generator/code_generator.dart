@@ -98,16 +98,18 @@ GettersAndSetters _generateGettersAndSetters(List<ApiFunction> functions) {
 }
 
 String _generateGetter(ApiFunction function) {
+  String type = _convertCppTypetoApiType(function.returnType);
   return '''
-EXPORT ${function.returnType} ${function.name}() { return ${function.variableName}; }
+EXPORT ${type} ${function.name}() { return ${function.variableName}; }
 ''';
 }
 
 String _generateSetter(ApiFunction function) {
   // Extract the parameter type from the parameters list
   String parameterType = function.parameters[0];
+  String type = _convertCppTypetoApiType(parameterType);
   return '''
-EXPORT void ${function.name}(${parameterType}) { ${function.variableName} = value; }
+EXPORT void ${function.name}(${type}) { ${function.variableName} = value; }
 ''';
 }
 
@@ -207,6 +209,17 @@ String _convertCppTypeToDartType(String cType) {
   switch (cType) {
     case 'real_T':
       return 'double';
+    case 'boolean_T':
+      return 'int';
+    default:
+      return 'dynamic';
+  }
+}
+
+String _convertCppTypetoApiType(String cType) {
+  switch (cType) {
+    case 'real_T':
+      return 'float';
     case 'boolean_T':
       return 'int';
     default:

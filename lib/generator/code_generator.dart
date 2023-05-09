@@ -98,8 +98,9 @@ GettersAndSetters _generateGettersAndSetters(List<ApiFunction> functions) {
 }
 
 String _generateGetter(ApiFunction function) {
+  String type = _convertCppTypetoApiType(function.returnType);
   return '''
-EXPORT ${function.returnType} ${function.name}() { return ${function.variableName}; }
+EXPORT ${type} ${function.name}() { return ${function.variableName}; }
 ''';
 }
 

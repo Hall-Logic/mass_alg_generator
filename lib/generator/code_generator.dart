@@ -106,10 +106,9 @@ EXPORT ${function.returnType} ${function.name}() { return ${function.variableNam
 String _generateSetter(ApiFunction function) {
   // Extract the parameter type from the parameters list
   String parameterType = function.parameters[0];
-  print(parameterType);
-  String type = _convertCppTypetoApiType(parameterType);
+  String type = _convertCppTypetoApiType(parameterType.split(' ')[0]);
   return '''
-EXPORT void ${function.name}(${parameterType}) { ${function.variableName} = value; }
+EXPORT void ${function.name}(${type} value) { ${function.variableName} = value; }
 ''';
 }
 

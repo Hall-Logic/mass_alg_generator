@@ -98,6 +98,7 @@ Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
 
 Future<void> generateFFIBridge(String packageDir) async {
   final outputDir = path.join(packageDir, 'algorithm');
+  print("hey: " + outputDir);
   final String algorithmFile = path.join(outputDir, 'Mass_Algorithm_App.c');
   final variables = await parseVariablesFromFile(algorithmFile);
   final functions = _generateApiFunctions(variables);

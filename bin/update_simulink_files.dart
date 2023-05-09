@@ -8,10 +8,6 @@ import 'package:mass_alg_generator/generator/code_generator.dart';
 import 'package:mass_alg_generator/generator/variable_parser.dart';
 import 'package:path/path.dart' as path;
 
-const algOutputDir = './libs/algorithm';
-const apiOutputDir = './libs';
-const ffiOutputDir = './lib/utils/algorithm_utils';
-
 Future<void> main(List<String> arguments) async {
   final parser = ArgParser()
     ..addOption('zipfile', abbr: 'z', help: 'Path to the input ZIP file');
@@ -24,25 +20,25 @@ Future<void> main(List<String> arguments) async {
   }
 
   // Get the package path
-  // final packagePath = await getPackagePath();
+  final packagePath = await getPackagePath();
   // Unzip and move the files
-  await unzipAndMoveFiles(results['zipfile'] as String);
+  await unzipAndMoveFiles(results['zipfile'] as String, packagePath);
 
   // Generate FFIBridge
-  await generateFFIBridge(ffiOutputDir);
+  await generateFFIBridge(packagePath);
 }
 
-Future<void> unzipAndMoveFiles(String zipfile) async {
-  // final outputDir = path.join(packageDir, 'libs/algorithm');
+Future<void> unzipAndMoveFiles(String zipfile, String packageDir) async {
+  final outputDir = path.join(packageDir, 'algorithm');
 
   // Unzip the input file into the output directory
   final bytes = File(zipfile).readAsBytesSync();
   final archive = ZipDecoder().decodeBytes(bytes);
 
-  Directory(algOutputDir).createSync();
+  Directory(outputDir).createSync();
 
   for (final file in archive) {
-    final filename = path.join(algOutputDir, file.name);
+    final filename = path.join(outputDir, file.name);
     if (file.isFile) {
       File(filename)
         ..createSync(recursive: true)
@@ -53,13 +49,13 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
   }
 
   // Flatten all subdirectories recursively
-  final files = Directory(algOutputDir)
+  final files = Directory(outputDir)
       .listSync(recursive: true, followLinks: false)
       .where((entity) => entity is File)
       .toList();
 
   for (final file in files) {
-    final newPath = path.join(algOutputDir, path.basename(file.path));
+    final newPath = path.join(outputDir, path.basename(file.path));
     file.renameSync(newPath);
   }
 
@@ -78,7 +74,7 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
     '.cur',
   ];
 
-  final filesToRemove = Directory(algOutputDir)
+  final filesToRemove = Directory(outputDir)
       .listSync(recursive: false, followLinks: false)
       .where((entity) =>
           entity is File &&
@@ -93,23 +89,24 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
 
   // Remove remaining subdirectories
   final directoriesToRemove =
-      Directory(algOutputDir).listSync().where((entity) => entity is Directory);
+      Directory(outputDir).listSync().where((entity) => entity is Directory);
 
   for (final dir in directoriesToRemove) {
     dir.deleteSync(recursive: true);
   }
 }
 
-Future<void> generateFFIBridge(String ffiOutputDir) async {
-  final String algorithmFile = path.join(algOutputDir, 'Mass_Algorithm_App.c');
+Future<void> generateFFIBridge(String packageDir) async {
+  final outputDir = path.join(packageDir, 'algorithm');
+  final String algorithmFile = path.join(outputDir, 'Mass_Algorithm_App.c');
   final variables = await parseVariablesFromFile(algorithmFile);
   final functions = _generateApiFunctions(variables);
 
   final apiC = generateApiC(functions);
-  await File(path.join(apiOutputDir, 'api.c')).writeAsString(apiC);
+  await File(path.join(packageDir, 'generated', 'api.c')).writeAsString(apiC);
 
   final dartFfiBridge = generateDartFfiBridgeCode(variables);
-  await File(path.join(ffiOutputDir, 'ffibridge.dart'))
+  await File(path.join(packageDir, 'generated', 'ffibridge.dart'))
       .writeAsString(dartFfiBridge);
 }
 

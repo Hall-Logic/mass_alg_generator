@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:mass_alg_generator/mixins/accelerometer.dart';
 import 'package:mass_alg_generator/utils/algorithm_utils.dart';
-import 'package:mass_alg_generator/generated/ffibridge.dart';
+// import project ffibridge.dart?
 
 mixin AccelerometerMonitoringMixin<T extends StatefulWidget> on State<T> {
   Accelerometer _accelerometer = Accelerometer((x, y, z) => null);

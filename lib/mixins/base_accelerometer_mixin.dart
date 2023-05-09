@@ -33,17 +33,22 @@ mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
   }
 
   @protected
+  @optionalTypeArgs
   void onStartAccelerometer() {}
 
   @protected
+  @optionalTypeArgs
   void onStopAccelerometer() {}
 
   @protected
+  @optionalTypeArgs
   void onProcessAccelerometerData(double x, double y, double z) {}
 
   @protected
+  @optionalTypeArgs
   void phoneMoved() {}
 
   @protected
+  @optionalTypeArgs
   void onMassAlgStep() {}
 }

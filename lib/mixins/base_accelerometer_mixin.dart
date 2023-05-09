@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:mass_alg_generator/mixins/accelerometer.dart';
 import 'package:wakelock/wakelock.dart';
 
+abstract class AccelerometerState<T extends StatefulWidget> extends State<T>
+    with BaseAccelerometerMixin<T> {
+  // This class will implement the BaseAccelerometerMixin by default
+}
+
 mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
   Accelerometer _accelerometer = Accelerometer((x, y, z) => null);
   bool _isListening = false;
@@ -52,3 +57,14 @@ mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
   @optionalTypeArgs
   void onMassAlgStep() {}
 }
+
+//usage:
+// extend the mixin in the state class:
+// mixin ExtendedAccelerometerMixin<T extends StatefulWidget>
+//     on AccelerometerState<T> {
+// @override
+//}
+
+//then on page:
+// class _PumpDataPageState extends AccelerometerState<PumpDataPage>
+//     with ExtendedAccelerometerMixin {

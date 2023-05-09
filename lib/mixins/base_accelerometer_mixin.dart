@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mass_alg_generator/mixins/accelerometer.dart';
 import 'package:wakelock/wakelock.dart';
 
-mixin BaseAccelerometerMonitoringMixin<T extends StatefulWidget> on State<T> {
+mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
   Accelerometer _accelerometer = Accelerometer((x, y, z) => null);
   bool _isListening = false;
 

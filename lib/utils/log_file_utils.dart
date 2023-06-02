@@ -25,7 +25,7 @@ class LogFileUtils {
       double fileSizeInMB = (fileSizeBytes.toDouble() / (1024 * 1024));
       return fileSizeInMB.toStringAsFixed(2) + " MB";
     } else {
-      return "0.0 MB";
+      return "0.00 MB";
     }
   }
 

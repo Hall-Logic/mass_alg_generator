@@ -12,15 +12,19 @@ dependencies:
   flutter:
     sdk: flutter
   path: ^1.8.2
-  # sensors_plus: ^2.0.1
   wakelock: ^0.6.2
   archive: ^3.1.7
   args: ^2.3.0
   mutex: ^3.0.1
   share_plus: ^6.3.2
   intl: ^0.18.0
-  flutter_sensors: ^1.0.1
-
+  sensors_plus:
+    git:
+      url: https://github.com/Hall-Logic/plus_plugins.git
+      path: packages/sensors_plus/sensors_plus
+      ref: main
+  # flutter_sensors: ^1.0.1
+  # sensors_plus: ^2.0.1
 
 dev_dependencies:
   flutter_test:

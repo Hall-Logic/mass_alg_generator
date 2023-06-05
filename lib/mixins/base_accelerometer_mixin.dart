@@ -12,13 +12,13 @@ mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
   Accelerometer _accelerometer = Accelerometer((x, y, z) => null);
   bool _isListening = false;
 
-  void startAccelerometer() {
+  Future<void> startAccelerometer() async {
     _isListening = true;
     _accelerometer = Accelerometer(_processAccelerometerData);
 
     onStartAccelerometer();
 
-    _accelerometer.startListening();
+    await _accelerometer.startListening();
     Wakelock.enable();
   }
 
@@ -67,4 +67,4 @@ mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
 
 //then on page:
 // class _PumpDataPageState extends AccelerometerState<PumpDataPage>
-//     with ExtendedAccelerometerMixin {
+//     with ExtendedAccelerometerMixin {}

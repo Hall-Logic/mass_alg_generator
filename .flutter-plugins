@@ -1,5 +1,4 @@
 # This is a generated file; do not edit or check into version control.
+package_info_plus=/Users/larsens/.pub-cache/hosted/pub.dev/package_info_plus-8.3.0/
 sensors_plus=/Users/larsens/.pub-cache/git/plus_plugins-3fcce4ef0f2af758bfb17212fa1e3bce7fa27ec9/packages/sensors_plus/sensors_plus/
-wakelock=/Users/larsens/.pub-cache/hosted/pub.dev/wakelock-0.6.2/
-wakelock_macos=/Users/larsens/.pub-cache/hosted/pub.dev/wakelock_macos-0.4.0/
-wakelock_web=/Users/larsens/.pub-cache/hosted/pub.dev/wakelock_web-0.4.0/
+wakelock_plus=/Users/larsens/.pub-cache/hosted/pub.dev/wakelock_plus-1.3.2/

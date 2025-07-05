@@ -1,7 +1,7 @@
 // base_accelerometer_monitoring_mixin.dart
 import 'package:flutter/material.dart';
 import 'package:mass_alg_generator/mixins/accelerometer.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 abstract class AccelerometerState<T extends StatefulWidget> extends State<T> with BaseAccelerometerMixin<T> {
   // This class will implement the BaseAccelerometerMixin by default
@@ -18,13 +18,13 @@ mixin BaseAccelerometerMixin<T extends StatefulWidget> on State<T> {
     onStartAccelerometer();
 
     _accelerometer.startListening();
-    Wakelock.enable();
+    WakelockPlus.enable();
   }
 
   void stopAccelerometer() {
     _isListening = false;
     _accelerometer.stopListening();
-    Wakelock.disable();
+    WakelockPlus.disable();
 
     onStopAccelerometer();
   }

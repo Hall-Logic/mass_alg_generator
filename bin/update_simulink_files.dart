@@ -13,8 +13,7 @@ const apiOutputDir = './libs';
 const ffiOutputDir = './lib/utils/algorithm_utils';
 
 Future<void> main(List<String> arguments) async {
-  final parser = ArgParser()
-    ..addOption('zipfile', abbr: 'z', help: 'Path to the input ZIP file');
+  final parser = ArgParser()..addOption('zipfile', abbr: 'z', help: 'Path to the input ZIP file');
 
   final results = parser.parse(arguments);
 
@@ -53,10 +52,8 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
   }
 
   // Flatten all subdirectories recursively
-  final files = Directory(algOutputDir)
-      .listSync(recursive: true, followLinks: false)
-      .where((entity) => entity is File)
-      .toList();
+  final files =
+      Directory(algOutputDir).listSync(recursive: true, followLinks: false).where((entity) => entity is File).toList();
 
   for (final file in files) {
     final newPath = path.join(algOutputDir, path.basename(file.path));
@@ -78,12 +75,8 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
     '.cur',
   ];
 
-  final filesToRemove = Directory(algOutputDir)
-      .listSync(recursive: false, followLinks: false)
-      .where((entity) =>
-          entity is File &&
-          (extensionsToRemove.contains(path.extension(entity.path)) ||
-              !entity.path.contains('.')));
+  final filesToRemove = Directory(algOutputDir).listSync(recursive: false, followLinks: false).where((entity) =>
+      entity is File && (extensionsToRemove.contains(path.extension(entity.path)) || !entity.path.contains('.')));
 
   for (final file in filesToRemove) {
     if (file.existsSync()) {
@@ -92,8 +85,7 @@ Future<void> unzipAndMoveFiles(String zipfile) async {
   }
 
   // Remove remaining subdirectories
-  final directoriesToRemove =
-      Directory(algOutputDir).listSync().where((entity) => entity is Directory);
+  final directoriesToRemove = Directory(algOutputDir).listSync().where((entity) => entity is Directory);
 
   for (final dir in directoriesToRemove) {
     dir.deleteSync(recursive: true);
@@ -109,8 +101,7 @@ Future<void> generateFFIBridge(String ffiOutputDir) async {
   await File(path.join(apiOutputDir, 'api.c')).writeAsString(apiC);
 
   final dartFfiBridge = generateDartFfiBridgeCode(variables);
-  await File(path.join(ffiOutputDir, 'ffibridge.dart'))
-      .writeAsString(dartFfiBridge);
+  await File(path.join(ffiOutputDir, 'ffibridge.dart')).writeAsString(dartFfiBridge);
 }
 
 List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
@@ -147,9 +138,7 @@ List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
       returnType: 'void',
       variableName: variable.name,
       isSetter: true,
-      parameters: [
-        variable.type + ' value'
-      ], // Add 'value' to the parameter type
+      parameters: [variable.type + ' value'], // Add 'value' to the parameter type
     ));
   }
 
@@ -158,7 +147,6 @@ List<ApiFunction> _generateApiFunctions(List<Variable> variables) {
 
 Future<String> getPackagePath() async {
   final packageUri = Uri.parse('package:mass_alg_generator/');
-  final packagePath =
-      (await Isolate.resolvePackageUri(packageUri))!.toFilePath();
+  final packagePath = (await Isolate.resolvePackageUri(packageUri))!.toFilePath();
   return packagePath;
 }

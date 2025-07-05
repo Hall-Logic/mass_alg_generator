@@ -23,8 +23,7 @@ List<Variable> _parseVariablesFromLines(List<String> lines) {
   for (final line in lines) {
     if (line.contains('/* Exported block signals */')) {
       inExportedBlockSignals = true;
-    } else if (line
-        .contains('/* Block signals and states (default storage) */')) {
+    } else if (line.contains('/* Block signals and states (default storage) */')) {
       break;
     }
 

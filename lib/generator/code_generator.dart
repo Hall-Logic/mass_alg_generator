@@ -114,9 +114,8 @@ EXPORT void ${function.name}(${type} value) { ${function.variableName} = value; 
 }
 
 String _generateFunctionBody(ApiFunction function) {
-  final parameters = function.parameters.isEmpty
-      ? ''
-      : function.parameters.map((param) => param.split(' ')[1]).join(', ');
+  final parameters =
+      function.parameters.isEmpty ? '' : function.parameters.map((param) => param.split(' ')[1]).join(', ');
 
   return 'return Mass_Algorithm_App_${function.name}($parameters);';
 }

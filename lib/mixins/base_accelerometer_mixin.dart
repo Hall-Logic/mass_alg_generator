@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mass_alg_generator/mixins/accelerometer.dart';
 import 'package:wakelock/wakelock.dart';
 
-abstract class AccelerometerState<T extends StatefulWidget> extends State<T>
-    with BaseAccelerometerMixin<T> {
+abstract class AccelerometerState<T extends StatefulWidget> extends State<T> with BaseAccelerometerMixin<T> {
   // This class will implement the BaseAccelerometerMixin by default
 }
 

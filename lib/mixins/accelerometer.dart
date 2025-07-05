@@ -9,8 +9,7 @@ class Accelerometer {
   Accelerometer(this.onData);
 
   void startListening() {
-    _streamSubscription =
-        accelerometerEvents.listen((AccelerometerEvent event) {
+    _streamSubscription = accelerometerEvents.listen((AccelerometerEvent event) {
       final accelX = -event.x / 9.8;
       final accelY = -event.y / 9.8;
       final accelZ = -event.z / 9.8;
